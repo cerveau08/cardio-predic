@@ -6,7 +6,11 @@ import os
 import json
 from werkzeug.utils import secure_filename
 import matplotlib
-matplotlib.use('Agg')
+# Détection automatique de l'environnement
+if os.environ.get('DYNO') or os.environ.get('PORT'):  # Heroku
+    matplotlib.use('Agg')
+else:  # Local
+    matplotlib.use('TkAgg')  # Interface graphique pour local
 import matplotlib.pyplot as plt
 import seaborn as sns
 import io
@@ -14,75 +18,86 @@ import base64
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = "heart_disease_prediction_secret_key"
+
+# Configuration adaptative selon l'environnement
+if os.environ.get('DYNO'):  # Production Heroku
+    app.secret_key = os.environ.get('SECRET_KEY', 'heart_disease_prediction_prod_key')
+    DEBUG_MODE = False
+    HOST = '0.0.0.0'
+    PORT = int(os.environ.get('PORT', 5000))
+else:  # Développement local
+    app.secret_key = 'heart_disease_prediction_dev_key'
+    DEBUG_MODE = True
+    HOST = '127.0.0.1'
+    PORT = 5000
+
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'csv'}
 
-# Créer le dossier uploads s'il n'existe pas
-if not os.path.exists(app.config['UPLOAD_FOLDER']):
-    os.makedirs(app.config['UPLOAD_FOLDER'])
+# Créer les dossiers nécessaires
+for folder in ['uploads', 'models']:
+    if not os.path.exists(folder):
+        os.makedirs(folder)
 
-# Créer le dossier models s'il n'existe pas
-if not os.path.exists('models'):
-    os.makedirs('models')
-
-# Vérifier si le modèle existe, sinon utiliser un modèle par défaut
-model_path = None
-scaler_path = os.path.join('models', 'scaler.pkl')
-
-# Chercher le fichier de modèle dans le dossier models
-if os.path.exists('models'):
-    pkl_files = [f for f in os.listdir('models') if f.endswith('.pkl') and f.startswith('best_model')]
+def load_models():
+    """Charger le modèle et le scaler avec gestion d'erreurs robuste"""
+    model_path = None
+    scaler_path = os.path.join('models', 'scaler.pkl')
     
-    # Filtrer les fichiers non vides et trier par taille (le plus gros en premier)
-    valid_files = []
-    for f in pkl_files:
-        file_path = os.path.join('models', f)
-        if os.path.getsize(file_path) > 0:  # Vérifier que le fichier n'est pas vide
-            valid_files.append((f, os.path.getsize(file_path)))
+    # Chercher le fichier de modèle dans le dossier models
+    if os.path.exists('models'):
+        pkl_files = [f for f in os.listdir('models') if f.endswith('.pkl') and f.startswith('best_model')]
+        
+        # Filtrer les fichiers non vides et trier par taille
+        valid_files = []
+        for f in pkl_files:
+            file_path = os.path.join('models', f)
+            if os.path.getsize(file_path) > 0:
+                valid_files.append((f, os.path.getsize(file_path)))
+        
+        if valid_files:
+            valid_files.sort(key=lambda x: x[1], reverse=True)
+            model_path = os.path.join('models', valid_files[0][0])
+            print(f"🔍 Fichier de modèle trouvé: {valid_files[0][0]} ({valid_files[0][1]} bytes)")
     
-    if valid_files:
-        # Prendre le fichier le plus volumineux (probablement le vrai modèle)
-        valid_files.sort(key=lambda x: x[1], reverse=True)
-        model_path = os.path.join('models', valid_files[0][0])
-        print(f"🔍 Fichier de modèle trouvé: {valid_files[0][0]} ({valid_files[0][1]} bytes)")
-
-try:
-    if model_path and os.path.exists(model_path) and os.path.exists(scaler_path):
-        print(f"📁 Tentative de chargement du modèle depuis: {model_path}")
-        print(f"📁 Tentative de chargement du scaler depuis: {scaler_path}")
-        
-        model = joblib.load(model_path)
-        scaler = joblib.load(scaler_path)
-        
-        print(f"✅ Modèle chargé avec succès depuis: {model_path}")
-        print(f"✅ Scaler chargé avec succès depuis: {scaler_path}")
-    else:
-        print("❌ Fichiers de modèle non trouvés")
-        if model_path:
-            print(f"Modèle recherché: {model_path}")
+    try:
+        if model_path and os.path.exists(model_path) and os.path.exists(scaler_path):
+            print(f"📁 Chargement du modèle depuis: {model_path}")
+            print(f"📁 Chargement du scaler depuis: {scaler_path}")
+            
+            model = joblib.load(model_path)
+            scaler = joblib.load(scaler_path)
+            
+            print(f"✅ Modèle et scaler chargés avec succès")
+            print(f"🤖 Type de modèle: {type(model).__name__}")
+            return model, scaler
         else:
-            print("Aucun fichier de modèle valide trouvé")
-        print(f"Scaler recherché: {scaler_path}")
-        model = None
-        scaler = None
-except Exception as e:
-    print(f"❌ Erreur lors du chargement du modèle: {str(e)}")
-    import traceback
-    traceback.print_exc()
-    model = None
-    scaler = None
+            print("❌ Fichiers de modèle non trouvés")
+            if DEBUG_MODE:  # En local, plus de détails
+                print(f"   Modèle recherché: {model_path}")
+                print(f"   Scaler recherché: {scaler_path}")
+                print(f"   Contenu du dossier models: {os.listdir('models') if os.path.exists('models') else 'Dossier inexistant'}")
+            return None, None
+    except Exception as e:
+        print(f"❌ Erreur lors du chargement: {str(e)}")
+        if DEBUG_MODE:  # Traceback complet en local
+            import traceback
+            traceback.print_exc()
+        return None, None
+
+# Charger les modèles au démarrage
+print(f"🚀 Démarrage en mode: {'PRODUCTION (Heroku)' if not DEBUG_MODE else 'DÉVELOPPEMENT (Local)'}")
+model, scaler = load_models()
 
 # Fonction pour vérifier l'extension du fichier
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
-# Configuration des features attendues par le modèle
+# Configuration des features
 feature_names = ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 
                 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
 
-# Description des features pour l'interface utilisateur
 feature_descriptions = {
     'age': 'Âge du patient (en années)',
     'sex': 'Sexe (0 = femme, 1 = homme)',
@@ -115,10 +130,34 @@ feature_ranges = {
     'thal': (0, 3)
 }
 
+def create_plot_safely(plot_function, *args, **kwargs):
+    """Créer un graphique avec gestion d'erreurs adaptée à l'environnement"""
+    try:
+        result = plot_function(*args, **kwargs)
+        
+        if not DEBUG_MODE:  # Production: toujours fermer
+            plt.close()
+        else:  # Local: laisser ouvert si voulu
+            plt.close()  # Fermer quand même pour éviter l'accumulation
+            
+        return result
+    except Exception as e:
+        print(f"Erreur génération graphique: {e}")
+        if DEBUG_MODE:
+            import traceback
+            traceback.print_exc()
+        plt.close()
+        return None
+
 # Routes
 @app.route('/')
 def index():
-    return render_template('index.html')
+    env_info = {
+        'environment': 'Production' if not DEBUG_MODE else 'Développement',
+        'model_loaded': model is not None,
+        'debug_mode': DEBUG_MODE
+    }
+    return render_template('index.html', env_info=env_info)
 
 @app.route('/predict', methods=['GET'])
 def predict_form():
@@ -130,7 +169,7 @@ def predict_form():
 @app.route('/predict', methods=['POST'])
 def predict():
     if model is None or scaler is None:
-        flash('Aucun modèle n\'est chargé. Veuillez d\'abord entraîner un modèle.', 'danger')
+        flash('Aucun modèle n\'est chargé. Veuillez contacter l\'administrateur.', 'danger')
         return redirect(url_for('index'))
 
     try:
@@ -166,9 +205,11 @@ def predict():
         # Stocker les entrées pour l'affichage
         input_values = dict(zip(feature_names, input_data))
         
-        # Créer un graphique de l'importance des variables (si supporté par le modèle)
-        feature_importance_img = None
-        if hasattr(model, 'feature_importances_'):
+        # Créer un graphique de l'importance des variables (si supporté)
+        def plot_feature_importance():
+            if not hasattr(model, 'feature_importances_'):
+                return None
+                
             plt.figure(figsize=(10, 6))
             features_df = pd.DataFrame({
                 'feature': feature_names,
@@ -177,12 +218,14 @@ def predict():
             
             sns.barplot(x='importance', y='feature', data=features_df)
             plt.title('Importance des variables')
+            plt.tight_layout()
             
             buf = io.BytesIO()
-            plt.savefig(buf, format='png')
+            plt.savefig(buf, format='png', dpi=100, bbox_inches='tight')
             buf.seek(0)
-            feature_importance_img = base64.b64encode(buf.read()).decode('utf-8')
-            plt.close()
+            return base64.b64encode(buf.read()).decode('utf-8')
+        
+        feature_importance_img = create_plot_safely(plot_feature_importance)
         
         return render_template('results.html', 
                               result=result, 
@@ -192,6 +235,9 @@ def predict():
                               
     except Exception as e:
         flash(f'Erreur lors de la prédiction: {str(e)}', 'danger')
+        if DEBUG_MODE:
+            import traceback
+            traceback.print_exc()
         return redirect(url_for('predict_form'))
 
 @app.route('/batch_predict', methods=['GET'])
@@ -201,7 +247,7 @@ def batch_predict_form():
 @app.route('/batch_predict', methods=['POST'])
 def batch_predict():
     if model is None or scaler is None:
-        flash('Aucun modèle n\'est chargé. Veuillez d\'abord entraîner un modèle.', 'danger')
+        flash('Aucun modèle n\'est chargé. Veuillez contacter l\'administrateur.', 'danger')
         return redirect(url_for('index'))
     
     if 'file' not in request.files:
@@ -225,7 +271,7 @@ def batch_predict():
             # Vérifier que toutes les colonnes nécessaires sont présentes
             missing_columns = [col for col in feature_names if col not in data.columns]
             if missing_columns:
-                flash(f'Colonnes manquantes dans le fichier CSV: {", ".join(missing_columns)}', 'danger')
+                flash(f'Colonnes manquantes: {", ".join(missing_columns)}', 'danger')
                 return redirect(url_for('batch_predict_form'))
             
             # Sélectionner uniquement les colonnes nécessaires
@@ -250,17 +296,20 @@ def batch_predict():
             data.to_csv(result_filepath, index=False)
             
             # Visualiser la distribution des prédictions
-            plt.figure(figsize=(10, 6))
-            sns.countplot(x='prediction', data=data)
-            plt.title('Distribution des prédictions')
-            plt.xlabel('Prédiction (0: Maladie, 1: Pas de maladie)')
-            plt.ylabel('Nombre de patients')
+            def plot_predictions_distribution():
+                plt.figure(figsize=(10, 6))
+                sns.countplot(x='prediction', data=data)
+                plt.title('Distribution des prédictions')
+                plt.xlabel('Prédiction (0: Maladie, 1: Pas de maladie)')
+                plt.ylabel('Nombre de patients')
+                plt.tight_layout()
+                
+                pred_dist_buf = io.BytesIO()
+                plt.savefig(pred_dist_buf, format='png', dpi=100, bbox_inches='tight')
+                pred_dist_buf.seek(0)
+                return base64.b64encode(pred_dist_buf.read()).decode('utf-8')
             
-            pred_dist_buf = io.BytesIO()
-            plt.savefig(pred_dist_buf, format='png')
-            pred_dist_buf.seek(0)
-            pred_dist_img = base64.b64encode(pred_dist_buf.read()).decode('utf-8')
-            plt.close()
+            pred_dist_img = create_plot_safely(plot_predictions_distribution)
             
             return render_template('batch_results.html',
                                   filename=filename,
@@ -272,93 +321,101 @@ def batch_predict():
             
         except Exception as e:
             flash(f'Erreur lors du traitement du fichier: {str(e)}', 'danger')
+            if DEBUG_MODE:
+                import traceback
+                traceback.print_exc()
             return redirect(url_for('batch_predict_form'))
+        finally:
+            # Nettoyer le fichier uploadé
+            if os.path.exists(filepath):
+                try:
+                    os.remove(filepath)
+                except:
+                    pass
     else:
         flash('Type de fichier non autorisé. Veuillez télécharger un fichier CSV.', 'danger')
         return redirect(url_for('batch_predict_form'))
 
 @app.route('/dashboard')
 def dashboard():
-    # Si aucun modèle n'est chargé, rediriger vers la page d'accueil
     if model is None or scaler is None:
         flash('Aucune donnée disponible pour le tableau de bord.', 'warning')
         return redirect(url_for('index'))
     
-    # Générer quelques visualisations
-    visualizations = {}
+    # Essayer de charger les données d'origine
+    data_path = os.path.join('data', 'heart.csv')
+    if not os.path.exists(data_path):
+        flash('Données d\'entraînement non disponibles.', 'warning')
+        return redirect(url_for('index'))
     
     try:
-        # Charger les données d'origine
-        data = pd.read_csv(os.path.join('data', 'heart.csv'))
+        data = pd.read_csv(data_path)
+        visualizations = {}
         
         # 1. Distribution de la variable cible
-        plt.figure(figsize=(8, 6))
-        target_counts = data['target'].value_counts()
-        plt.pie(target_counts, labels=['Maladie cardiaque', 'Pas de maladie cardiaque'], 
-                autopct='%1.1f%%', startangle=90, colors=['#FF9999', '#66B2FF'])
-        plt.title('Distribution des cas de maladies cardiaques')
+        def plot_target_distribution():
+            plt.figure(figsize=(8, 6))
+            target_counts = data['target'].value_counts()
+            plt.pie(target_counts, labels=['Maladie cardiaque', 'Pas de maladie cardiaque'], 
+                    autopct='%1.1f%%', startangle=90, colors=['#FF9999', '#66B2FF'])
+            plt.title('Distribution des cas de maladies cardiaques')
+            
+            buf = io.BytesIO()
+            plt.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+            buf.seek(0)
+            return base64.b64encode(buf.read()).decode('utf-8')
         
-        buf1 = io.BytesIO()
-        plt.savefig(buf1, format='png')
-        buf1.seek(0)
-        visualizations['target_dist'] = base64.b64encode(buf1.read()).decode('utf-8')
-        plt.close()
+        visualizations['target_dist'] = create_plot_safely(plot_target_distribution)
         
         # 2. Distribution par âge et sexe
-        plt.figure(figsize=(10, 6))
-        sns.histplot(data=data, x='age', hue='sex', multiple='stack', bins=15)
-        plt.title('Distribution de l\'âge par sexe')
-        plt.xlabel('Âge')
-        plt.ylabel('Nombre de patients')
-        plt.legend(['Femme', 'Homme'])
+        def plot_age_sex_distribution():
+            plt.figure(figsize=(10, 6))
+            sns.histplot(data=data, x='age', hue='sex', multiple='stack', bins=15)
+            plt.title('Distribution de l\'âge par sexe')
+            plt.xlabel('Âge')
+            plt.ylabel('Nombre de patients')
+            plt.legend(['Femme', 'Homme'])
+            plt.tight_layout()
+            
+            buf = io.BytesIO()
+            plt.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+            buf.seek(0)
+            return base64.b64encode(buf.read()).decode('utf-8')
         
-        buf2 = io.BytesIO()
-        plt.savefig(buf2, format='png')
-        buf2.seek(0)
-        visualizations['age_sex_dist'] = base64.b64encode(buf2.read()).decode('utf-8')
-        plt.close()
+        visualizations['age_sex_dist'] = create_plot_safely(plot_age_sex_distribution)
         
         # 3. Cholestérol vs Pression artérielle
-        plt.figure(figsize=(10, 6))
-        sns.scatterplot(data=data, x='chol', y='trestbps', hue='target')
-        plt.title('Cholestérol vs Pression artérielle')
-        plt.xlabel('Cholestérol (mg/dl)')
-        plt.ylabel('Pression artérielle (mm Hg)')
-        plt.legend(['Maladie cardiaque', 'Pas de maladie cardiaque'])
+        def plot_chol_bp():
+            plt.figure(figsize=(10, 6))
+            sns.scatterplot(data=data, x='chol', y='trestbps', hue='target')
+            plt.title('Cholestérol vs Pression artérielle')
+            plt.xlabel('Cholestérol (mg/dl)')
+            plt.ylabel('Pression artérielle (mm Hg)')
+            plt.legend(['Maladie cardiaque', 'Pas de maladie cardiaque'])
+            plt.tight_layout()
+            
+            buf = io.BytesIO()
+            plt.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+            buf.seek(0)
+            return base64.b64encode(buf.read()).decode('utf-8')
         
-        buf3 = io.BytesIO()
-        plt.savefig(buf3, format='png')
-        buf3.seek(0)
-        visualizations['chol_bp'] = base64.b64encode(buf3.read()).decode('utf-8')
-        plt.close()
+        visualizations['chol_bp'] = create_plot_safely(plot_chol_bp)
         
-        # 4. Type de douleur thoracique par diagnostic
-        plt.figure(figsize=(10, 6))
-        ct = pd.crosstab(data['cp'], data['target'])
-        ct.plot(kind='bar', stacked=True)
-        plt.title('Type de douleur thoracique par diagnostic')
-        plt.xlabel('Type de douleur thoracique')
-        plt.ylabel('Nombre de patients')
-        plt.legend(['Maladie cardiaque', 'Pas de maladie cardiaque'])
+        # 4. Matrice de corrélation
+        def plot_correlation():
+            plt.figure(figsize=(12, 10))
+            corr = data.corr()
+            mask = np.triu(np.ones_like(corr, dtype=bool))
+            sns.heatmap(corr, mask=mask, annot=True, fmt='.2f', cmap='coolwarm', square=True, linewidths=0.5)
+            plt.title('Matrice de corrélation des variables')
+            plt.tight_layout()
+            
+            buf = io.BytesIO()
+            plt.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+            buf.seek(0)
+            return base64.b64encode(buf.read()).decode('utf-8')
         
-        buf4 = io.BytesIO()
-        plt.savefig(buf4, format='png')
-        buf4.seek(0)
-        visualizations['cp_target'] = base64.b64encode(buf4.read()).decode('utf-8')
-        plt.close()
-        
-        # 5. Matrice de corrélation
-        plt.figure(figsize=(12, 10))
-        corr = data.corr()
-        mask = np.triu(np.ones_like(corr, dtype=bool))
-        sns.heatmap(corr, mask=mask, annot=True, fmt='.2f', cmap='coolwarm', square=True, linewidths=0.5)
-        plt.title('Matrice de corrélation des variables')
-        
-        buf5 = io.BytesIO()
-        plt.savefig(buf5, format='png')
-        buf5.seek(0)
-        visualizations['correlation'] = base64.b64encode(buf5.read()).decode('utf-8')
-        plt.close()
+        visualizations['correlation'] = create_plot_safely(plot_correlation)
         
         # Statistiques globales
         stats = {
@@ -380,6 +437,9 @@ def dashboard():
                                
     except Exception as e:
         flash(f'Erreur lors de la génération du tableau de bord: {str(e)}', 'danger')
+        if DEBUG_MODE:
+            import traceback
+            traceback.print_exc()
         return redirect(url_for('index'))
 
 @app.route('/api/predict', methods=['POST'])
@@ -411,13 +471,59 @@ def api_predict():
         result = {
             'prediction': int(prediction),
             'prediction_text': 'Absence de maladie cardiaque' if prediction == 1 else 'Présence de maladie cardiaque',
-            'confidence': float(max(prediction_proba) * 100)
+            'confidence': float(max(prediction_proba) * 100),
+            'environment': 'production' if not DEBUG_MODE else 'development'
         }
         
         return jsonify(result), 200
         
     except Exception as e:
+        if DEBUG_MODE:
+            import traceback
+            traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
+@app.route('/health')
+def health_check():
+    """Endpoint de santé pour vérifier l'état de l'application"""
+    return jsonify({
+        'status': 'healthy',
+        'environment': 'production' if not DEBUG_MODE else 'development',
+        'model_loaded': model is not None,
+        'scaler_loaded': scaler is not None,
+        'debug_mode': DEBUG_MODE,
+        'timestamp': datetime.now().isoformat()
+    })
+
+@app.route('/env')
+def environment_info():
+    """Page d'information sur l'environnement (utile pour debug)"""
+    env_vars = {
+        'DYNO': os.environ.get('DYNO', 'Non défini'),
+        'PORT': os.environ.get('PORT', 'Non défini'),
+        'DEBUG_MODE': DEBUG_MODE,
+        'HOST': HOST,
+        'MATPLOTLIB_BACKEND': matplotlib.get_backend()
+    }
+    
+    return jsonify(env_vars)
+
+# Gestion d'erreurs
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('error.html', error_code=404, error_message="Page non trouvée"), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    if DEBUG_MODE:
+        import traceback
+        traceback.print_exc()
+    return render_template('error.html', error_code=500, error_message="Erreur interne du serveur"), 500
+
+# Point d'entrée principal - FONCTIONNE EN LOCAL ET HEROKU
 if __name__ == '__main__':
-    app.run(debug=True)
+    print(f"🌍 Serveur démarré sur {HOST}:{PORT}")
+    print(f"🔧 Mode debug: {DEBUG_MODE}")
+    print(f"📊 Modèle chargé: {model is not None}")
+    
+    app.run(host=HOST, port=PORT, debug=DEBUG_MODE)

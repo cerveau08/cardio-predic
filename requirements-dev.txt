@@ -1,0 +1,32 @@
+# Dépendances principales pour CardioPredict
+Flask==2.2.3
+Werkzeug==2.2.3
+flask-wtf==1.1.1
+Jinja2==3.1.2
+
+# Pour le traitement des données et machine learning
+numpy==1.24.2
+pandas==1.5.3
+scikit-learn==1.2.2
+imbalanced-learn==0.10.1
+joblib==1.2.0
+
+# Pour les visualisations
+matplotlib==3.7.1
+seaborn==0.12.2
+
+# Pour le déploiement 
+gunicorn==20.1.0
+python-dotenv==1.0.0
+
+# Sécurité
+Flask-Talisman==1.0.0
+pyOpenSSL==23.1.1
+
+# Gestion des fichiers
+Pillow==9.5.0
+WTForms==3.0.1
+
+# Tests
+pytest==7.3.1
+coverage==7.2.3
