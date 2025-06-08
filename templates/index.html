@@ -1,0 +1,224 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container-fluid py-5 hero-section">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="p-4">
+                <h1 class="display-4 fw-bold text-primary mb-4">Prédiction de Maladies Cardiaques</h1>
+                <p class="lead mb-4">
+                    Bienvenue sur notre plateforme d'analyse prédictive des maladies cardiaques. 
+                    Notre système utilise des algorithmes avancés de machine learning pour 
+                    évaluer le risque de maladies cardiaques en fonction de différents paramètres médicaux.
+                </p>
+                <div class="d-grid gap-2 d-md-flex">
+                    <a href="{{ url_for('predict_form') }}" class="btn btn-primary btn-lg px-4 me-md-2">
+                        <i class="fas fa-user me-2"></i>Analyse individuelle
+                    </a>
+                    <a href="{{ url_for('batch_predict_form') }}" class="btn btn-outline-primary btn-lg px-4">
+                        <i class="fas fa-file-csv me-2"></i>Analyse par lot
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="heart-animation">
+                <i class="fas fa-heartbeat text-danger"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-5">Comment ça fonctionne</h2>
+    
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h5 class="card-title">1. Entrez vos données</h5>
+                    <p class="card-text">
+                        Fournissez vos informations médicales comme l'âge, la pression artérielle, 
+                        le taux de cholestérol et d'autres indicateurs de santé cardiaque.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h5 class="card-title">2. Analyse IA</h5>
+                    <p class="card-text">
+                        Notre système d'intelligence artificielle analyse vos données en utilisant 
+                        des modèles de machine learning entraînés sur des milliers de cas cliniques.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h5 class="card-title">3. Résultats détaillés</h5>
+                    <p class="card-text">
+                        Obtenez une prédiction précise sur votre risque de maladie cardiaque, 
+                        accompagnée d'une analyse détaillée des facteurs contributifs.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h2 class="mb-4">Pourquoi utiliser notre système ?</h2>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong>Précision élevée :</strong> Nos modèles atteignent une précision de plus de 85% dans la prédiction des maladies cardiaques.
+                </li>
+                <li class="list-group-item">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong>Analyse rapide :</strong> Obtenez des résultats en quelques secondes, sans attente ni procédures complexes.
+                </li>
+                <li class="list-group-item">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong>Interface intuitive :</strong> Notre système est conçu pour être utilisé facilement par les professionnels de santé comme par les patients.
+                </li>
+                <li class="list-group-item">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong>Analyses détaillées :</strong> Visualisez l'importance des différents facteurs de risque dans votre évaluation.
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="display-1 text-primary mb-3">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h3>Prêt à commencer?</h3>
+                        <p class="text-muted">Faites votre première prédiction dès maintenant.</p>
+                    </div>
+                    <div class="d-grid">
+                        <a href="{{ url_for('predict_form') }}" class="btn btn-primary btn-lg">
+                            Commencer l'analyse
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5 py-5 bg-light rounded">
+    <h2 class="text-center mb-5">Facteurs de risque des maladies cardiaques</h2>
+    
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-heartbeat text-danger me-2"></i>Âge et sexe</h5>
+                    <p class="card-text">
+                        Le risque de maladies cardiaques augmente avec l'âge. Les hommes sont généralement plus à risque,
+                        bien que le risque augmente chez les femmes après la ménopause.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-tint text-danger me-2"></i>Cholestérol élevé</h5>
+                    <p class="card-text">
+                        Un taux élevé de cholestérol peut contribuer à la formation de plaques dans les artères,
+                        augmentant le risque de maladies cardiaques et d'accidents vasculaires cérébraux.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-chart-line text-danger me-2"></i>Hypertension</h5>
+                    <p class="card-text">
+                        Une pression artérielle élevée force le cœur à travailler plus dur, ce qui peut endommager
+                        les artères et augmenter le risque de maladies cardiaques.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-smoking text-danger me-2"></i>Tabagisme</h5>
+                    <p class="card-text">
+                        Le tabagisme endommage les vaisseaux sanguins, augmente la pression artérielle et réduit
+                        l'apport d'oxygène au cœur, augmentant considérablement le risque cardiaque.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-cookie-bite text-danger me-2"></i>Diabète</h5>
+                    <p class="card-text">
+                        Le diabète augmente le risque de maladies cardiaques en endommageant les nerfs et les vaisseaux sanguins
+                        qui contrôlent le cœur et les vaisseaux sanguins.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-running text-danger me-2"></i>Mode de vie sédentaire</h5>
+                    <p class="card-text">
+                        Un manque d'activité physique régulière contribue à l'obésité, à l'hypertension et au diabète,
+                        tous des facteurs de risque majeurs pour les maladies cardiaques.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Animation pour le cœur battant
+    document.addEventListener('DOMContentLoaded', function() {
+        const heart = document.querySelector('.heart-animation i');
+        
+        function pulseHeart() {
+            heart.classList.add('pulse');
+            setTimeout(() => {
+                heart.classList.remove('pulse');
+            }, 500);
+        }
+        
+        // Faire battre le cœur toutes les 1.5 secondes
+        setInterval(pulseHeart, 1500);
+        pulseHeart(); // Premier battement immédiat
+    });
+</script>
+{% endblock %}

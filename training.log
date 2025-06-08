@@ -1,0 +1,753 @@
+2025-05-23 21:57:27,431 - __main__ - INFO - Chargement des données depuis data/heart.csv
+2025-05-23 21:57:27,456 - __main__ - INFO - Données chargées avec succès. Dimensions: (303, 14)
+2025-05-23 21:57:27,457 - __main__ - INFO - Exploration des données
+2025-05-23 21:57:27,457 - __main__ - INFO - Dimensions du dataset: (303, 14)
+2025-05-23 21:57:27,458 - __main__ - INFO - Types de données:
+age           int64
+sex           int64
+cp            int64
+trestbps      int64
+chol          int64
+fbs           int64
+restecg       int64
+thalach       int64
+exang         int64
+oldpeak     float64
+slope         int64
+ca            int64
+thal          int64
+target        int64
+dtype: object
+2025-05-23 21:57:27,509 - __main__ - INFO - Statistiques descriptives:
+              age  ...      target
+count  303.000000  ...  303.000000
+mean    54.366337  ...    0.544554
+std      9.082101  ...    0.498835
+min     29.000000  ...    0.000000
+25%     47.500000  ...    0.000000
+50%     55.000000  ...    1.000000
+75%     61.000000  ...    1.000000
+max     77.000000  ...    1.000000
+
+[8 rows x 14 columns]
+2025-05-23 21:57:27,512 - __main__ - INFO - Valeurs manquantes par colonne:
+age         0
+sex         0
+cp          0
+trestbps    0
+chol        0
+fbs         0
+restecg     0
+thalach     0
+exang       0
+oldpeak     0
+slope       0
+ca          0
+thal        0
+target      0
+dtype: int64
+2025-05-23 21:57:27,514 - __main__ - INFO - Distribution de la variable cible:
+1    54.455446
+0    45.544554
+Name: target, dtype: float64
+2025-05-23 21:57:29,256 - __main__ - INFO - Visualisations sauvegardées dans le dossier 'visualizations'
+2025-05-23 21:57:29,256 - __main__ - INFO - Prétraitement des données
+2025-05-23 21:57:29,259 - __main__ - INFO - Suppression de 1 doublons
+2025-05-23 21:57:29,269 - __main__ - INFO - Traitement de 9 valeurs aberrantes dans trestbps
+2025-05-23 21:57:29,273 - __main__ - INFO - Traitement de 5 valeurs aberrantes dans chol
+2025-05-23 21:57:29,276 - __main__ - INFO - Traitement de 45 valeurs aberrantes dans fbs
+2025-05-23 21:57:29,280 - __main__ - INFO - Traitement de 1 valeurs aberrantes dans thalach
+2025-05-23 21:57:29,287 - __main__ - INFO - Traitement de 5 valeurs aberrantes dans oldpeak
+2025-05-23 21:57:29,291 - __main__ - INFO - Traitement de 24 valeurs aberrantes dans ca
+2025-05-23 21:57:29,295 - __main__ - INFO - Traitement de 2 valeurs aberrantes dans thal
+2025-05-23 21:57:29,302 - __main__ - INFO - Division des données: X_train (211, 13), X_test (91, 13)
+2025-05-23 21:57:29,303 - __main__ - INFO - Normalisation des données avec StandardScaler
+2025-05-23 21:57:29,307 - __main__ - INFO - Entraînement des modèles
+2025-05-23 21:57:29,309 - __main__ - INFO - Entraînement du modèle: Régression Logistique
+2025-05-23 21:57:29,320 - __main__ - INFO - Entraînement terminé pour Régression Logistique
+2025-05-23 21:57:29,320 - __main__ - INFO - Entraînement du modèle: Arbre de Décision
+2025-05-23 21:57:29,323 - __main__ - INFO - Entraînement terminé pour Arbre de Décision
+2025-05-23 21:57:29,323 - __main__ - INFO - Entraînement du modèle: Random Forest
+2025-05-23 21:57:29,470 - __main__ - INFO - Entraînement terminé pour Random Forest
+2025-05-23 21:57:29,470 - __main__ - INFO - Entraînement du modèle: Gradient Boosting
+2025-05-23 21:57:29,559 - __main__ - INFO - Entraînement terminé pour Gradient Boosting
+2025-05-23 21:57:29,559 - __main__ - INFO - Entraînement du modèle: SVM
+2025-05-23 21:57:29,567 - __main__ - INFO - Entraînement terminé pour SVM
+2025-05-23 21:57:29,568 - __main__ - INFO - Entraînement du modèle: KNN
+2025-05-23 21:57:29,569 - __main__ - INFO - Entraînement terminé pour KNN
+2025-05-23 21:57:29,570 - __main__ - INFO - Entraînement du modèle: Naive Bayes
+2025-05-23 21:57:29,571 - __main__ - INFO - Entraînement terminé pour Naive Bayes
+2025-05-23 21:57:29,572 - __main__ - INFO - Entraînement du modèle: MLP
+2025-05-23 21:57:31,282 - __main__ - INFO - Entraînement terminé pour MLP
+2025-05-23 21:57:31,282 - __main__ - INFO - Évaluation des modèles
+2025-05-23 21:57:31,282 - __main__ - INFO - Évaluation du modèle: Régression Logistique
+2025-05-23 21:57:31,290 - __main__ - INFO - Résultats pour Régression Logistique:
+2025-05-23 21:57:31,290 - __main__ - INFO -   Accuracy: 0.7912
+2025-05-23 21:57:31,290 - __main__ - INFO -   Precision: 0.7959
+2025-05-23 21:57:31,298 - __main__ - INFO -   Recall: 0.7912
+2025-05-23 21:57:31,298 - __main__ - INFO -   F1-score: 0.7887
+2025-05-23 21:57:31,298 - __main__ - INFO -   Matrice de confusion:
+[[29 13]
+ [ 6 43]]
+2025-05-23 21:57:31,529 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.83      0.69      0.75        42
+           1       0.77      0.88      0.82        49
+
+    accuracy                           0.79        91
+   macro avg       0.80      0.78      0.79        91
+weighted avg       0.80      0.79      0.79        91
+
+2025-05-23 21:57:31,529 - __main__ - INFO - Évaluation du modèle: Arbre de Décision
+2025-05-23 21:57:31,531 - __main__ - INFO - Résultats pour Arbre de Décision:
+2025-05-23 21:57:31,535 - __main__ - INFO -   Accuracy: 0.7912
+2025-05-23 21:57:31,535 - __main__ - INFO -   Precision: 0.7959
+2025-05-23 21:57:31,535 - __main__ - INFO -   Recall: 0.7912
+2025-05-23 21:57:31,535 - __main__ - INFO -   F1-score: 0.7887
+2025-05-23 21:57:31,537 - __main__ - INFO -   Matrice de confusion:
+[[29 13]
+ [ 6 43]]
+2025-05-23 21:57:31,700 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.83      0.69      0.75        42
+           1       0.77      0.88      0.82        49
+
+    accuracy                           0.79        91
+   macro avg       0.80      0.78      0.79        91
+weighted avg       0.80      0.79      0.79        91
+
+2025-05-23 21:57:31,700 - __main__ - INFO - Évaluation du modèle: Random Forest
+2025-05-23 21:57:31,714 - __main__ - INFO - Résultats pour Random Forest:
+2025-05-23 21:57:31,714 - __main__ - INFO -   Accuracy: 0.7802
+2025-05-23 21:57:31,714 - __main__ - INFO -   Precision: 0.7863
+2025-05-23 21:57:31,714 - __main__ - INFO -   Recall: 0.7802
+2025-05-23 21:57:31,721 - __main__ - INFO -   F1-score: 0.7769
+2025-05-23 21:57:31,721 - __main__ - INFO -   Matrice de confusion:
+[[28 14]
+ [ 6 43]]
+2025-05-23 21:57:31,888 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.82      0.67      0.74        42
+           1       0.75      0.88      0.81        49
+
+    accuracy                           0.78        91
+   macro avg       0.79      0.77      0.77        91
+weighted avg       0.79      0.78      0.78        91
+
+2025-05-23 21:57:31,888 - __main__ - INFO - Évaluation du modèle: Gradient Boosting
+2025-05-23 21:57:31,897 - __main__ - INFO - Résultats pour Gradient Boosting:
+2025-05-23 21:57:31,897 - __main__ - INFO -   Accuracy: 0.8022
+2025-05-23 21:57:31,897 - __main__ - INFO -   Precision: 0.8021
+2025-05-23 21:57:31,897 - __main__ - INFO -   Recall: 0.8022
+2025-05-23 21:57:31,900 - __main__ - INFO -   F1-score: 0.8018
+2025-05-23 21:57:31,900 - __main__ - INFO -   Matrice de confusion:
+[[32 10]
+ [ 8 41]]
+2025-05-23 21:57:32,074 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.80      0.76      0.78        42
+           1       0.80      0.84      0.82        49
+
+    accuracy                           0.80        91
+   macro avg       0.80      0.80      0.80        91
+weighted avg       0.80      0.80      0.80        91
+
+2025-05-23 21:57:32,074 - __main__ - INFO - Évaluation du modèle: SVM
+2025-05-23 21:57:32,082 - __main__ - INFO - Résultats pour SVM:
+2025-05-23 21:57:32,086 - __main__ - INFO -   Accuracy: 0.8242
+2025-05-23 21:57:32,086 - __main__ - INFO -   Precision: 0.8323
+2025-05-23 21:57:32,086 - __main__ - INFO -   Recall: 0.8242
+2025-05-23 21:57:32,086 - __main__ - INFO -   F1-score: 0.8216
+2025-05-23 21:57:32,086 - __main__ - INFO -   Matrice de confusion:
+[[30 12]
+ [ 4 45]]
+2025-05-23 21:57:32,272 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.88      0.71      0.79        42
+           1       0.79      0.92      0.85        49
+
+    accuracy                           0.82        91
+   macro avg       0.84      0.82      0.82        91
+weighted avg       0.83      0.82      0.82        91
+
+2025-05-23 21:57:32,272 - __main__ - INFO - Évaluation du modèle: KNN
+2025-05-23 21:57:32,283 - __main__ - INFO - Résultats pour KNN:
+2025-05-23 21:57:32,283 - __main__ - INFO -   Accuracy: 0.8132
+2025-05-23 21:57:32,283 - __main__ - INFO -   Precision: 0.8187
+2025-05-23 21:57:32,284 - __main__ - INFO -   Recall: 0.8132
+2025-05-23 21:57:32,284 - __main__ - INFO -   F1-score: 0.8109
+2025-05-23 21:57:32,284 - __main__ - INFO -   Matrice de confusion:
+[[30 12]
+ [ 5 44]]
+2025-05-23 21:57:32,462 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.86      0.71      0.78        42
+           1       0.79      0.90      0.84        49
+
+    accuracy                           0.81        91
+   macro avg       0.82      0.81      0.81        91
+weighted avg       0.82      0.81      0.81        91
+
+2025-05-23 21:57:32,463 - __main__ - INFO - Évaluation du modèle: Naive Bayes
+2025-05-23 21:57:32,469 - __main__ - INFO - Résultats pour Naive Bayes:
+2025-05-23 21:57:32,469 - __main__ - INFO -   Accuracy: 0.8352
+2025-05-23 21:57:32,469 - __main__ - INFO -   Precision: 0.8415
+2025-05-23 21:57:32,469 - __main__ - INFO -   Recall: 0.8352
+2025-05-23 21:57:32,471 - __main__ - INFO -   F1-score: 0.8332
+2025-05-23 21:57:32,471 - __main__ - INFO -   Matrice de confusion:
+[[31 11]
+ [ 4 45]]
+2025-05-23 21:57:32,643 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.89      0.74      0.81        42
+           1       0.80      0.92      0.86        49
+
+    accuracy                           0.84        91
+   macro avg       0.84      0.83      0.83        91
+weighted avg       0.84      0.84      0.83        91
+
+2025-05-23 21:57:32,644 - __main__ - INFO - Évaluation du modèle: MLP
+2025-05-23 21:57:32,649 - __main__ - INFO - Résultats pour MLP:
+2025-05-23 21:57:32,650 - __main__ - INFO -   Accuracy: 0.7802
+2025-05-23 21:57:32,650 - __main__ - INFO -   Precision: 0.7830
+2025-05-23 21:57:32,650 - __main__ - INFO -   Recall: 0.7802
+2025-05-23 21:57:32,651 - __main__ - INFO -   F1-score: 0.7781
+2025-05-23 21:57:32,652 - __main__ - INFO -   Matrice de confusion:
+[[29 13]
+ [ 7 42]]
+2025-05-23 21:57:32,838 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.81      0.69      0.74        42
+           1       0.76      0.86      0.81        49
+
+    accuracy                           0.78        91
+   macro avg       0.78      0.77      0.78        91
+weighted avg       0.78      0.78      0.78        91
+
+2025-05-23 21:57:32,843 - __main__ - INFO - Comparaison des métriques:
+               Modèle  Accuracy  Precision   Recall  F1-score  Score_Global
+          Naive Bayes  0.835165   0.841484 0.835165  0.833167      0.836245
+                  SVM  0.824176   0.832341 0.824176  0.821557      0.825562
+                  KNN  0.813187   0.818681 0.813187  0.810922      0.813994
+    Gradient Boosting  0.802198   0.802112 0.802198  0.801764      0.802068
+Régression Logistique  0.791209   0.795879 0.791209  0.788678      0.791744
+    Arbre de Décision  0.791209   0.795879 0.791209  0.788678      0.791744
+        Random Forest  0.780220   0.786298 0.780220  0.776946      0.780921
+                  MLP  0.780220   0.782984 0.780220  0.778107      0.780382
+2025-05-23 21:57:33,188 - __main__ - INFO - Meilleur modèle: Naive Bayes avec un score global de 0.8362
+2025-05-23 21:57:33,188 - __main__ - INFO - Sauvegarde du meilleur modèle dans models\best_model_naive_bayes.pkl
+2025-05-23 21:57:33,189 - __main__ - INFO - Sauvegarde du scaler dans models\scaler.pkl
+2025-05-23 21:57:33,195 - __main__ - INFO - Métriques sauvegardées dans models\model_metrics.csv
+2025-05-23 21:57:33,195 - __main__ - INFO - Entraînement terminé avec succès!
+2025-05-23 21:57:33,196 - __main__ - INFO - Meilleur modèle: Naive Bayes
+2025-05-23 21:57:33,196 - __main__ - INFO - Sauvegardé dans: models\best_model_naive_bayes.pkl
+2025-06-08 10:38:31,872 - __main__ - INFO - Chargement des données depuis data/heart.csv
+2025-06-08 10:38:31,892 - __main__ - INFO - Données chargées avec succès. Dimensions: (303, 14)
+2025-06-08 10:38:31,892 - __main__ - INFO - Exploration des données
+2025-06-08 10:38:31,892 - __main__ - INFO - Dimensions du dataset: (303, 14)
+2025-06-08 10:38:31,893 - __main__ - INFO - Types de données:
+age           int64
+sex           int64
+cp            int64
+trestbps      int64
+chol          int64
+fbs           int64
+restecg       int64
+thalach       int64
+exang         int64
+oldpeak     float64
+slope         int64
+ca            int64
+thal          int64
+target        int64
+dtype: object
+2025-06-08 10:38:31,947 - __main__ - INFO - Statistiques descriptives:
+              age         sex          cp    trestbps        chol  ...     oldpeak       slope          ca        thal      target
+count  303.000000  303.000000  303.000000  303.000000  303.000000  ...  303.000000  303.000000  303.000000  303.000000  303.000000
+mean    54.366337    0.683168    0.966997  131.623762  246.264026  ...    1.039604    1.399340    0.729373    2.313531    0.544554
+std      9.082101    0.466011    1.032052   17.538143   51.830751  ...    1.161075    0.616226    1.022606    0.612277    0.498835
+min     29.000000    0.000000    0.000000   94.000000  126.000000  ...    0.000000    0.000000    0.000000    0.000000    0.000000
+25%     47.500000    0.000000    0.000000  120.000000  211.000000  ...    0.000000    1.000000    0.000000    2.000000    0.000000
+50%     55.000000    1.000000    1.000000  130.000000  240.000000  ...    0.800000    1.000000    0.000000    2.000000    1.000000
+75%     61.000000    1.000000    2.000000  140.000000  274.500000  ...    1.600000    2.000000    1.000000    3.000000    1.000000
+max     77.000000    1.000000    3.000000  200.000000  564.000000  ...    6.200000    2.000000    4.000000    3.000000    1.000000
+
+[8 rows x 14 columns]
+2025-06-08 10:38:31,953 - __main__ - INFO - Valeurs manquantes par colonne:
+age         0
+sex         0
+cp          0
+trestbps    0
+chol        0
+fbs         0
+restecg     0
+thalach     0
+exang       0
+oldpeak     0
+slope       0
+ca          0
+thal        0
+target      0
+dtype: int64
+2025-06-08 10:38:31,955 - __main__ - INFO - Distribution de la variable cible:
+1    54.455446
+0    45.544554
+Name: target, dtype: float64
+2025-06-08 10:38:33,462 - __main__ - INFO - Visualisations sauvegardées dans le dossier 'visualizations'
+2025-06-08 10:38:33,462 - __main__ - INFO - Prétraitement des données
+2025-06-08 10:38:33,465 - __main__ - INFO - Suppression de 1 doublons
+2025-06-08 10:38:33,482 - __main__ - INFO - Traitement de 9 valeurs aberrantes dans trestbps
+2025-06-08 10:38:33,488 - __main__ - INFO - Traitement de 5 valeurs aberrantes dans chol
+2025-06-08 10:38:33,488 - __main__ - INFO - Traitement de 45 valeurs aberrantes dans fbs
+2025-06-08 10:38:33,496 - __main__ - INFO - Traitement de 1 valeurs aberrantes dans thalach
+2025-06-08 10:38:33,509 - __main__ - INFO - Traitement de 5 valeurs aberrantes dans oldpeak
+2025-06-08 10:38:33,515 - __main__ - INFO - Traitement de 24 valeurs aberrantes dans ca
+2025-06-08 10:38:33,521 - __main__ - INFO - Traitement de 2 valeurs aberrantes dans thal
+2025-06-08 10:38:33,532 - __main__ - INFO - Division des données: X_train (211, 13), X_test (91, 13)
+2025-06-08 10:38:33,533 - __main__ - INFO - Normalisation des données avec StandardScaler
+2025-06-08 10:38:33,538 - __main__ - INFO - Entraînement des modèles
+2025-06-08 10:38:33,538 - __main__ - INFO - Entraînement du modèle: Régression Logistique
+2025-06-08 10:38:33,550 - __main__ - INFO - Entraînement terminé pour Régression Logistique
+2025-06-08 10:38:33,550 - __main__ - INFO - Entraînement du modèle: Arbre de Décision
+2025-06-08 10:38:33,551 - __main__ - INFO - Entraînement terminé pour Arbre de Décision
+2025-06-08 10:38:33,555 - __main__ - INFO - Entraînement du modèle: Random Forest
+2025-06-08 10:38:33,709 - __main__ - INFO - Entraînement terminé pour Random Forest
+2025-06-08 10:38:33,709 - __main__ - INFO - Entraînement du modèle: Gradient Boosting
+2025-06-08 10:38:33,830 - __main__ - INFO - Entraînement terminé pour Gradient Boosting
+2025-06-08 10:38:33,830 - __main__ - INFO - Entraînement du modèle: SVM
+2025-06-08 10:38:33,839 - __main__ - INFO - Entraînement terminé pour SVM
+2025-06-08 10:38:33,839 - __main__ - INFO - Entraînement du modèle: KNN
+2025-06-08 10:38:33,848 - __main__ - INFO - Entraînement terminé pour KNN
+2025-06-08 10:38:33,848 - __main__ - INFO - Entraînement du modèle: Naive Bayes
+2025-06-08 10:38:33,852 - __main__ - INFO - Entraînement terminé pour Naive Bayes
+2025-06-08 10:38:33,852 - __main__ - INFO - Entraînement du modèle: MLP
+2025-06-08 10:38:35,478 - __main__ - INFO - Entraînement terminé pour MLP
+2025-06-08 10:38:35,478 - __main__ - INFO - Évaluation des modèles
+2025-06-08 10:38:35,478 - __main__ - INFO - Évaluation du modèle: Régression Logistique
+2025-06-08 10:38:35,482 - __main__ - INFO - Résultats pour Régression Logistique:
+2025-06-08 10:38:35,482 - __main__ - INFO -   Accuracy: 0.7912
+2025-06-08 10:38:35,482 - __main__ - INFO -   Precision: 0.7959
+2025-06-08 10:38:35,482 - __main__ - INFO -   Recall: 0.7912
+2025-06-08 10:38:35,482 - __main__ - INFO -   F1-score: 0.7887
+2025-06-08 10:38:35,482 - __main__ - INFO -   Matrice de confusion:
+[[29 13]
+ [ 6 43]]
+2025-06-08 10:38:35,691 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.83      0.69      0.75        42
+           1       0.77      0.88      0.82        49
+
+    accuracy                           0.79        91
+   macro avg       0.80      0.78      0.79        91
+weighted avg       0.80      0.79      0.79        91
+
+2025-06-08 10:38:35,691 - __main__ - INFO - Évaluation du modèle: Arbre de Décision
+2025-06-08 10:38:35,702 - __main__ - INFO - Résultats pour Arbre de Décision:
+2025-06-08 10:38:35,703 - __main__ - INFO -   Accuracy: 0.7912
+2025-06-08 10:38:35,703 - __main__ - INFO -   Precision: 0.7959
+2025-06-08 10:38:35,703 - __main__ - INFO -   Recall: 0.7912
+2025-06-08 10:38:35,703 - __main__ - INFO -   F1-score: 0.7887
+2025-06-08 10:38:35,703 - __main__ - INFO -   Matrice de confusion:
+[[29 13]
+ [ 6 43]]
+2025-06-08 10:38:35,886 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.83      0.69      0.75        42
+           1       0.77      0.88      0.82        49
+
+    accuracy                           0.79        91
+   macro avg       0.80      0.78      0.79        91
+weighted avg       0.80      0.79      0.79        91
+
+2025-06-08 10:38:35,886 - __main__ - INFO - Évaluation du modèle: Random Forest
+2025-06-08 10:38:35,918 - __main__ - INFO - Résultats pour Random Forest:
+2025-06-08 10:38:35,918 - __main__ - INFO -   Accuracy: 0.7802
+2025-06-08 10:38:35,920 - __main__ - INFO -   Precision: 0.7863
+2025-06-08 10:38:35,920 - __main__ - INFO -   Recall: 0.7802
+2025-06-08 10:38:35,920 - __main__ - INFO -   F1-score: 0.7769
+2025-06-08 10:38:35,920 - __main__ - INFO -   Matrice de confusion:
+[[28 14]
+ [ 6 43]]
+2025-06-08 10:38:36,102 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.82      0.67      0.74        42
+           1       0.75      0.88      0.81        49
+
+    accuracy                           0.78        91
+   macro avg       0.79      0.77      0.77        91
+weighted avg       0.79      0.78      0.78        91
+
+2025-06-08 10:38:36,102 - __main__ - INFO - Évaluation du modèle: Gradient Boosting
+2025-06-08 10:38:36,118 - __main__ - INFO - Résultats pour Gradient Boosting:
+2025-06-08 10:38:36,118 - __main__ - INFO -   Accuracy: 0.8022
+2025-06-08 10:38:36,118 - __main__ - INFO -   Precision: 0.8021
+2025-06-08 10:38:36,118 - __main__ - INFO -   Recall: 0.8022
+2025-06-08 10:38:36,118 - __main__ - INFO -   F1-score: 0.8018
+2025-06-08 10:38:36,118 - __main__ - INFO -   Matrice de confusion:
+[[32 10]
+ [ 8 41]]
+2025-06-08 10:38:36,306 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.80      0.76      0.78        42
+           1       0.80      0.84      0.82        49
+
+    accuracy                           0.80        91
+   macro avg       0.80      0.80      0.80        91
+weighted avg       0.80      0.80      0.80        91
+
+2025-06-08 10:38:36,307 - __main__ - INFO - Évaluation du modèle: SVM
+2025-06-08 10:38:36,314 - __main__ - INFO - Résultats pour SVM:
+2025-06-08 10:38:36,315 - __main__ - INFO -   Accuracy: 0.8242
+2025-06-08 10:38:36,316 - __main__ - INFO -   Precision: 0.8323
+2025-06-08 10:38:36,316 - __main__ - INFO -   Recall: 0.8242
+2025-06-08 10:38:36,317 - __main__ - INFO -   F1-score: 0.8216
+2025-06-08 10:38:36,317 - __main__ - INFO -   Matrice de confusion:
+[[30 12]
+ [ 4 45]]
+2025-06-08 10:38:36,499 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.88      0.71      0.79        42
+           1       0.79      0.92      0.85        49
+
+    accuracy                           0.82        91
+   macro avg       0.84      0.82      0.82        91
+weighted avg       0.83      0.82      0.82        91
+
+2025-06-08 10:38:36,499 - __main__ - INFO - Évaluation du modèle: KNN
+2025-06-08 10:38:36,515 - __main__ - INFO - Résultats pour KNN:
+2025-06-08 10:38:36,516 - __main__ - INFO -   Accuracy: 0.8132
+2025-06-08 10:38:36,516 - __main__ - INFO -   Precision: 0.8187
+2025-06-08 10:38:36,516 - __main__ - INFO -   Recall: 0.8132
+2025-06-08 10:38:36,516 - __main__ - INFO -   F1-score: 0.8109
+2025-06-08 10:38:36,518 - __main__ - INFO -   Matrice de confusion:
+[[30 12]
+ [ 5 44]]
+2025-06-08 10:38:36,694 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.86      0.71      0.78        42
+           1       0.79      0.90      0.84        49
+
+    accuracy                           0.81        91
+   macro avg       0.82      0.81      0.81        91
+weighted avg       0.82      0.81      0.81        91
+
+2025-06-08 10:38:36,694 - __main__ - INFO - Évaluation du modèle: Naive Bayes
+2025-06-08 10:38:36,702 - __main__ - INFO - Résultats pour Naive Bayes:
+2025-06-08 10:38:36,702 - __main__ - INFO -   Accuracy: 0.8352
+2025-06-08 10:38:36,702 - __main__ - INFO -   Precision: 0.8415
+2025-06-08 10:38:36,702 - __main__ - INFO -   Recall: 0.8352
+2025-06-08 10:38:36,706 - __main__ - INFO -   F1-score: 0.8332
+2025-06-08 10:38:36,706 - __main__ - INFO -   Matrice de confusion:
+[[31 11]
+ [ 4 45]]
+2025-06-08 10:38:36,876 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.89      0.74      0.81        42
+           1       0.80      0.92      0.86        49
+
+    accuracy                           0.84        91
+   macro avg       0.84      0.83      0.83        91
+weighted avg       0.84      0.84      0.83        91
+
+2025-06-08 10:38:36,876 - __main__ - INFO - Évaluation du modèle: MLP
+2025-06-08 10:38:36,884 - __main__ - INFO - Résultats pour MLP:
+2025-06-08 10:38:36,884 - __main__ - INFO -   Accuracy: 0.7802
+2025-06-08 10:38:36,884 - __main__ - INFO -   Precision: 0.7830
+2025-06-08 10:38:36,884 - __main__ - INFO -   Recall: 0.7802
+2025-06-08 10:38:36,884 - __main__ - INFO -   F1-score: 0.7781
+2025-06-08 10:38:36,884 - __main__ - INFO -   Matrice de confusion:
+[[29 13]
+ [ 7 42]]
+2025-06-08 10:38:37,048 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.81      0.69      0.74        42
+           1       0.76      0.86      0.81        49
+
+    accuracy                           0.78        91
+   macro avg       0.78      0.77      0.78        91
+weighted avg       0.78      0.78      0.78        91
+
+2025-06-08 10:38:37,069 - __main__ - INFO - Comparaison des métriques:
+               Modèle  Accuracy  Precision   Recall  F1-score  Score_Global
+          Naive Bayes  0.835165   0.841484 0.835165  0.833167      0.836245
+                  SVM  0.824176   0.832341 0.824176  0.821557      0.825562
+                  KNN  0.813187   0.818681 0.813187  0.810922      0.813994
+    Gradient Boosting  0.802198   0.802112 0.802198  0.801764      0.802068
+Régression Logistique  0.791209   0.795879 0.791209  0.788678      0.791744
+    Arbre de Décision  0.791209   0.795879 0.791209  0.788678      0.791744
+        Random Forest  0.780220   0.786298 0.780220  0.776946      0.780921
+                  MLP  0.780220   0.782984 0.780220  0.778107      0.780382
+2025-06-08 10:38:37,408 - __main__ - INFO - Meilleur modèle: Naive Bayes avec un score global de 0.8362
+2025-06-08 10:38:37,408 - __main__ - INFO - Sauvegarde du meilleur modèle dans models\best_model_naive_bayes.pkl
+2025-06-08 10:38:37,408 - __main__ - INFO - Sauvegarde du scaler dans models\scaler.pkl
+2025-06-08 10:38:37,424 - __main__ - INFO - Métriques sauvegardées dans models\model_metrics.csv
+2025-06-08 10:38:37,424 - __main__ - INFO - Entraînement terminé avec succès!
+2025-06-08 10:38:37,424 - __main__ - INFO - Meilleur modèle: Naive Bayes
+2025-06-08 10:38:37,424 - __main__ - INFO - Sauvegardé dans: models\best_model_naive_bayes.pkl
+2025-06-08 11:05:09,534 - __main__ - INFO - Chargement des données depuis data/heart.csv
+2025-06-08 11:05:09,553 - __main__ - INFO - Données chargées avec succès. Dimensions: (303, 14)
+2025-06-08 11:05:09,553 - __main__ - INFO - Exploration des données
+2025-06-08 11:05:09,553 - __main__ - INFO - Dimensions du dataset: (303, 14)
+2025-06-08 11:05:09,553 - __main__ - INFO - Types de données:
+age           int64
+sex           int64
+cp            int64
+trestbps      int64
+chol          int64
+fbs           int64
+restecg       int64
+thalach       int64
+exang         int64
+oldpeak     float64
+slope         int64
+ca            int64
+thal          int64
+target        int64
+dtype: object
+2025-06-08 11:05:09,623 - __main__ - INFO - Statistiques descriptives:
+              age         sex          cp    trestbps        chol         fbs  ...       exang     oldpeak       slope          ca        thal      target
+count  303.000000  303.000000  303.000000  303.000000  303.000000  303.000000  ...  303.000000  303.000000  303.000000  303.000000  303.000000  303.000000
+mean    54.366337    0.683168    0.966997  131.623762  246.264026    0.148515  ...    0.326733    1.039604    1.399340    0.729373    2.313531    0.544554
+std      9.082101    0.466011    1.032052   17.538143   51.830751    0.356198  ...    0.469794    1.161075    0.616226    1.022606    0.612277    0.498835
+min     29.000000    0.000000    0.000000   94.000000  126.000000    0.000000  ...    0.000000    0.000000    0.000000    0.000000    0.000000    0.000000
+25%     47.500000    0.000000    0.000000  120.000000  211.000000    0.000000  ...    0.000000    0.000000    1.000000    0.000000    2.000000    0.000000
+50%     55.000000    1.000000    1.000000  130.000000  240.000000    0.000000  ...    0.000000    0.800000    1.000000    0.000000    2.000000    1.000000
+75%     61.000000    1.000000    2.000000  140.000000  274.500000    0.000000  ...    1.000000    1.600000    2.000000    1.000000    3.000000    1.000000
+max     77.000000    1.000000    3.000000  200.000000  564.000000    1.000000  ...    1.000000    6.200000    2.000000    4.000000    3.000000    1.000000
+
+[8 rows x 14 columns]
+2025-06-08 11:05:09,623 - __main__ - INFO - Valeurs manquantes par colonne:
+age         0
+sex         0
+cp          0
+trestbps    0
+chol        0
+fbs         0
+restecg     0
+thalach     0
+exang       0
+oldpeak     0
+slope       0
+ca          0
+thal        0
+target      0
+dtype: int64
+2025-06-08 11:05:09,623 - __main__ - INFO - Distribution de la variable cible:
+1    54.455446
+0    45.544554
+Name: target, dtype: float64
+2025-06-08 11:05:10,578 - __main__ - INFO - Visualisations sauvegardées dans le dossier 'visualizations'
+2025-06-08 11:05:10,578 - __main__ - INFO - Prétraitement des données
+2025-06-08 11:05:10,578 - __main__ - INFO - Suppression de 1 doublons
+2025-06-08 11:05:10,598 - __main__ - INFO - Traitement de 9 valeurs aberrantes dans trestbps
+2025-06-08 11:05:10,604 - __main__ - INFO - Traitement de 5 valeurs aberrantes dans chol
+2025-06-08 11:05:10,604 - __main__ - INFO - Traitement de 45 valeurs aberrantes dans fbs
+2025-06-08 11:05:10,614 - __main__ - INFO - Traitement de 1 valeurs aberrantes dans thalach
+2025-06-08 11:05:10,622 - __main__ - INFO - Traitement de 5 valeurs aberrantes dans oldpeak
+2025-06-08 11:05:10,627 - __main__ - INFO - Traitement de 24 valeurs aberrantes dans ca
+2025-06-08 11:05:10,627 - __main__ - INFO - Traitement de 2 valeurs aberrantes dans thal
+2025-06-08 11:05:10,644 - __main__ - INFO - Division des données: X_train (211, 13), X_test (91, 13)
+2025-06-08 11:05:10,644 - __main__ - INFO - Normalisation des données avec StandardScaler
+2025-06-08 11:05:10,648 - __main__ - INFO - Entraînement des modèles
+2025-06-08 11:05:10,648 - __main__ - INFO - Entraînement du modèle: Régression Logistique
+2025-06-08 11:05:10,659 - __main__ - INFO - Entraînement terminé pour Régression Logistique
+2025-06-08 11:05:10,660 - __main__ - INFO - Entraînement du modèle: Arbre de Décision
+2025-06-08 11:05:10,661 - __main__ - INFO - Entraînement terminé pour Arbre de Décision
+2025-06-08 11:05:10,661 - __main__ - INFO - Entraînement du modèle: Random Forest
+2025-06-08 11:05:10,837 - __main__ - INFO - Entraînement terminé pour Random Forest
+2025-06-08 11:05:10,837 - __main__ - INFO - Entraînement du modèle: Gradient Boosting
+2025-06-08 11:05:10,974 - __main__ - INFO - Entraînement terminé pour Gradient Boosting
+2025-06-08 11:05:10,974 - __main__ - INFO - Entraînement du modèle: SVM
+2025-06-08 11:05:10,995 - __main__ - INFO - Entraînement terminé pour SVM
+2025-06-08 11:05:10,995 - __main__ - INFO - Entraînement du modèle: KNN
+2025-06-08 11:05:10,997 - __main__ - INFO - Entraînement terminé pour KNN
+2025-06-08 11:05:10,998 - __main__ - INFO - Entraînement du modèle: Naive Bayes
+2025-06-08 11:05:11,000 - __main__ - INFO - Entraînement terminé pour Naive Bayes
+2025-06-08 11:05:11,000 - __main__ - INFO - Entraînement du modèle: MLP
+2025-06-08 11:05:12,872 - __main__ - INFO - Entraînement terminé pour MLP
+2025-06-08 11:05:12,872 - __main__ - INFO - Évaluation des modèles
+2025-06-08 11:05:12,872 - __main__ - INFO - Évaluation du modèle: Régression Logistique
+2025-06-08 11:05:12,872 - __main__ - INFO - Résultats pour Régression Logistique:
+2025-06-08 11:05:12,872 - __main__ - INFO -   Accuracy: 0.7912
+2025-06-08 11:05:12,887 - __main__ - INFO -   Precision: 0.7959
+2025-06-08 11:05:12,887 - __main__ - INFO -   Recall: 0.7912
+2025-06-08 11:05:12,887 - __main__ - INFO -   F1-score: 0.7887
+2025-06-08 11:05:12,889 - __main__ - INFO -   Matrice de confusion:
+[[29 13]
+ [ 6 43]]
+2025-06-08 11:05:13,125 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.83      0.69      0.75        42
+           1       0.77      0.88      0.82        49
+
+    accuracy                           0.79        91
+   macro avg       0.80      0.78      0.79        91
+weighted avg       0.80      0.79      0.79        91
+
+2025-06-08 11:05:13,125 - __main__ - INFO - Évaluation du modèle: Arbre de Décision
+2025-06-08 11:05:13,129 - __main__ - INFO - Résultats pour Arbre de Décision:
+2025-06-08 11:05:13,129 - __main__ - INFO -   Accuracy: 0.7912
+2025-06-08 11:05:13,129 - __main__ - INFO -   Precision: 0.7959
+2025-06-08 11:05:13,129 - __main__ - INFO -   Recall: 0.7912
+2025-06-08 11:05:13,129 - __main__ - INFO -   F1-score: 0.7887
+2025-06-08 11:05:13,129 - __main__ - INFO -   Matrice de confusion:
+[[29 13]
+ [ 6 43]]
+2025-06-08 11:05:13,355 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.83      0.69      0.75        42
+           1       0.77      0.88      0.82        49
+
+    accuracy                           0.79        91
+   macro avg       0.80      0.78      0.79        91
+weighted avg       0.80      0.79      0.79        91
+
+2025-06-08 11:05:13,355 - __main__ - INFO - Évaluation du modèle: Random Forest
+2025-06-08 11:05:13,389 - __main__ - INFO - Résultats pour Random Forest:
+2025-06-08 11:05:13,391 - __main__ - INFO -   Accuracy: 0.7802
+2025-06-08 11:05:13,392 - __main__ - INFO -   Precision: 0.7863
+2025-06-08 11:05:13,393 - __main__ - INFO -   Recall: 0.7802
+2025-06-08 11:05:13,393 - __main__ - INFO -   F1-score: 0.7769
+2025-06-08 11:05:13,394 - __main__ - INFO -   Matrice de confusion:
+[[28 14]
+ [ 6 43]]
+2025-06-08 11:05:13,610 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.82      0.67      0.74        42
+           1       0.75      0.88      0.81        49
+
+    accuracy                           0.78        91
+   macro avg       0.79      0.77      0.77        91
+weighted avg       0.79      0.78      0.78        91
+
+2025-06-08 11:05:13,610 - __main__ - INFO - Évaluation du modèle: Gradient Boosting
+2025-06-08 11:05:13,628 - __main__ - INFO - Résultats pour Gradient Boosting:
+2025-06-08 11:05:13,629 - __main__ - INFO -   Accuracy: 0.8022
+2025-06-08 11:05:13,629 - __main__ - INFO -   Precision: 0.8021
+2025-06-08 11:05:13,630 - __main__ - INFO -   Recall: 0.8022
+2025-06-08 11:05:13,631 - __main__ - INFO -   F1-score: 0.8018
+2025-06-08 11:05:13,631 - __main__ - INFO -   Matrice de confusion:
+[[32 10]
+ [ 8 41]]
+2025-06-08 11:05:13,850 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.80      0.76      0.78        42
+           1       0.80      0.84      0.82        49
+
+    accuracy                           0.80        91
+   macro avg       0.80      0.80      0.80        91
+weighted avg       0.80      0.80      0.80        91
+
+2025-06-08 11:05:13,850 - __main__ - INFO - Évaluation du modèle: SVM
+2025-06-08 11:05:13,870 - __main__ - INFO - Résultats pour SVM:
+2025-06-08 11:05:13,870 - __main__ - INFO -   Accuracy: 0.8242
+2025-06-08 11:05:13,870 - __main__ - INFO -   Precision: 0.8323
+2025-06-08 11:05:13,870 - __main__ - INFO -   Recall: 0.8242
+2025-06-08 11:05:13,870 - __main__ - INFO -   F1-score: 0.8216
+2025-06-08 11:05:13,876 - __main__ - INFO -   Matrice de confusion:
+[[30 12]
+ [ 4 45]]
+2025-06-08 11:05:14,107 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.88      0.71      0.79        42
+           1       0.79      0.92      0.85        49
+
+    accuracy                           0.82        91
+   macro avg       0.84      0.82      0.82        91
+weighted avg       0.83      0.82      0.82        91
+
+2025-06-08 11:05:14,107 - __main__ - INFO - Évaluation du modèle: KNN
+2025-06-08 11:05:14,128 - __main__ - INFO - Résultats pour KNN:
+2025-06-08 11:05:14,128 - __main__ - INFO -   Accuracy: 0.8132
+2025-06-08 11:05:14,131 - __main__ - INFO -   Precision: 0.8187
+2025-06-08 11:05:14,131 - __main__ - INFO -   Recall: 0.8132
+2025-06-08 11:05:14,132 - __main__ - INFO -   F1-score: 0.8109
+2025-06-08 11:05:14,133 - __main__ - INFO -   Matrice de confusion:
+[[30 12]
+ [ 5 44]]
+2025-06-08 11:05:14,358 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.86      0.71      0.78        42
+           1       0.79      0.90      0.84        49
+
+    accuracy                           0.81        91
+   macro avg       0.82      0.81      0.81        91
+weighted avg       0.82      0.81      0.81        91
+
+2025-06-08 11:05:14,358 - __main__ - INFO - Évaluation du modèle: Naive Bayes
+2025-06-08 11:05:14,374 - __main__ - INFO - Résultats pour Naive Bayes:
+2025-06-08 11:05:14,374 - __main__ - INFO -   Accuracy: 0.8352
+2025-06-08 11:05:14,374 - __main__ - INFO -   Precision: 0.8415
+2025-06-08 11:05:14,380 - __main__ - INFO -   Recall: 0.8352
+2025-06-08 11:05:14,380 - __main__ - INFO -   F1-score: 0.8332
+2025-06-08 11:05:14,380 - __main__ - INFO -   Matrice de confusion:
+[[31 11]
+ [ 4 45]]
+2025-06-08 11:05:14,612 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.89      0.74      0.81        42
+           1       0.80      0.92      0.86        49
+
+    accuracy                           0.84        91
+   macro avg       0.84      0.83      0.83        91
+weighted avg       0.84      0.84      0.83        91
+
+2025-06-08 11:05:14,612 - __main__ - INFO - Évaluation du modèle: MLP
+2025-06-08 11:05:14,612 - __main__ - INFO - Résultats pour MLP:
+2025-06-08 11:05:14,612 - __main__ - INFO -   Accuracy: 0.7802
+2025-06-08 11:05:14,612 - __main__ - INFO -   Precision: 0.7830
+2025-06-08 11:05:14,623 - __main__ - INFO -   Recall: 0.7802
+2025-06-08 11:05:14,623 - __main__ - INFO -   F1-score: 0.7781
+2025-06-08 11:05:14,623 - __main__ - INFO -   Matrice de confusion:
+[[29 13]
+ [ 7 42]]
+2025-06-08 11:05:14,842 - __main__ - INFO -   Rapport de classification:
+              precision    recall  f1-score   support
+
+           0       0.81      0.69      0.74        42
+           1       0.76      0.86      0.81        49
+
+    accuracy                           0.78        91
+   macro avg       0.78      0.77      0.78        91
+weighted avg       0.78      0.78      0.78        91
+
+2025-06-08 11:05:14,842 - __main__ - INFO - Comparaison des métriques:
+               Modèle  Accuracy  Precision   Recall  F1-score  Score_Global
+          Naive Bayes  0.835165   0.841484 0.835165  0.833167      0.836245
+                  SVM  0.824176   0.832341 0.824176  0.821557      0.825562
+                  KNN  0.813187   0.818681 0.813187  0.810922      0.813994
+    Gradient Boosting  0.802198   0.802112 0.802198  0.801764      0.802068
+Régression Logistique  0.791209   0.795879 0.791209  0.788678      0.791744
+    Arbre de Décision  0.791209   0.795879 0.791209  0.788678      0.791744
+        Random Forest  0.780220   0.786298 0.780220  0.776946      0.780921
+                  MLP  0.780220   0.782984 0.780220  0.778107      0.780382
+2025-06-08 11:05:15,317 - __main__ - INFO - Meilleur modèle: Naive Bayes avec un score global de 0.8362
+2025-06-08 11:05:15,317 - __main__ - INFO - Sauvegarde du meilleur modèle dans models\best_model_naive_bayes.pkl
+2025-06-08 11:05:15,317 - __main__ - INFO - Sauvegarde du scaler dans models\scaler.pkl
+2025-06-08 11:05:15,326 - __main__ - INFO - Métriques sauvegardées dans models\model_metrics.csv
+2025-06-08 11:05:15,326 - __main__ - INFO - Entraînement terminé avec succès!
+2025-06-08 11:05:15,326 - __main__ - INFO - Meilleur modèle: Naive Bayes
+2025-06-08 11:05:15,326 - __main__ - INFO - Sauvegardé dans: models\best_model_naive_bayes.pkl

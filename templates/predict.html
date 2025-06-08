@@ -1,0 +1,288 @@
+{% extends "layout.html" %}
+
+{% block title %}Prédiction Individuelle - CardioPredict{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="fas fa-stethoscope me-2"></i>Prédiction de Maladie Cardiaque</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text mb-4">
+                        Remplissez le formulaire ci-dessous avec les informations médicales du patient pour obtenir une prédiction.
+                        Tous les champs sont obligatoires pour assurer la précision des résultats.
+                    </p>
+                    
+                    <form action="{{ url_for('predict') }}" method="post" id="prediction-form">
+                        <div class="row g-3">
+                            <!-- Informations démographiques -->
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="age" name="age" min="{{ feature_ranges['age'][0] }}" max="{{ feature_ranges['age'][1] }}" required>
+                                    <label for="age">Âge <small class="text-muted">({{ feature_ranges['age'][0] }}-{{ feature_ranges['age'][1] }} ans)</small></label>
+                                    <div class="form-text">{{ feature_descriptions['age'] }}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Sexe</label>
+                                    <div class="form-text mb-2">{{ feature_descriptions['sex'] }}</div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="sex" id="sex-1" value="1" required>
+                                        <label class="form-check-label" for="sex-1">Homme</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="sex" id="sex-0" value="0">
+                                        <label class="form-check-label" for="sex-0">Femme</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Type de douleur thoracique -->
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="cp" class="form-label">Type de douleur thoracique</label>
+                                    <div class="form-text mb-2">{{ feature_descriptions['cp'] }}</div>
+                                    <select class="form-select" id="cp" name="cp" required>
+                                        <option value="" selected disabled>Sélectionner...</option>
+                                        <option value="0">Asymptomatique</option>
+                                        <option value="1">Angine atypique</option>
+                                        <option value="2">Douleur sans rapport avec l'angine</option>
+                                        <option value="3">Angine typique</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Pression artérielle -->
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="trestbps" name="trestbps" min="{{ feature_ranges['trestbps'][0] }}" max="{{ feature_ranges['trestbps'][1] }}" required>
+                                    <label for="trestbps">Pression artérielle <small class="text-muted">(mm Hg)</small></label>
+                                    <div class="form-text">{{ feature_descriptions['trestbps'] }}</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Cholestérol -->
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="chol" name="chol" min="{{ feature_ranges['chol'][0] }}" max="{{ feature_ranges['chol'][1] }}" required>
+                                    <label for="chol">Cholestérol <small class="text-muted">(mg/dl)</small></label>
+                                    <div class="form-text">{{ feature_descriptions['chol'] }}</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Taux de sucre -->
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Taux de sucre > 120 mg/dl</label>
+                                    <div class="form-text mb-2">{{ feature_descriptions['fbs'] }}</div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="fbs" id="fbs-1" value="1" required>
+                                        <label class="form-check-label" for="fbs-1">Oui</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="fbs" id="fbs-0" value="0">
+                                        <label class="form-check-label" for="fbs-0">Non</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- ECG repos -->
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="restecg" class="form-label">Résultats ECG repos</label>
+                                    <div class="form-text mb-2">{{ feature_descriptions['restecg'] }}</div>
+                                    <select class="form-select" id="restecg" name="restecg" required>
+                                        <option value="" selected disabled>Sélectionner...</option>
+                                        <option value="0">Hypertrophie ventriculaire gauche probable</option>
+                                        <option value="1">Normale</option>
+                                        <option value="2">Anomalies de l'onde T ou du segment ST</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Fréquence cardiaque max -->
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="thalach" name="thalach" min="{{ feature_ranges['thalach'][0] }}" max="{{ feature_ranges['thalach'][1] }}" required>
+                                    <label for="thalach">Fréquence cardiaque maximale</label>
+                                    <div class="form-text">{{ feature_descriptions['thalach'] }}</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Angine induite par l'exercice -->
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Angine induite par l'exercice</label>
+                                    <div class="form-text mb-2">{{ feature_descriptions['exang'] }}</div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="exang" id="exang-1" value="1" required>
+                                        <label class="form-check-label" for="exang-1">Oui</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="exang" id="exang-0" value="0">
+                                        <label class="form-check-label" for="exang-0">Non</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Dépression ST -->
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="oldpeak" name="oldpeak" min="{{ feature_ranges['oldpeak'][0] }}" max="{{ feature_ranges['oldpeak'][1] }}" step="0.1" required>
+                                    <label for="oldpeak">Dépression ST</label>
+                                    <div class="form-text">{{ feature_descriptions['oldpeak'] }}</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Pente segment ST -->
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="slope" class="form-label">Pente segment ST</label>
+                                    <div class="form-text mb-2">{{ feature_descriptions['slope'] }}</div>
+                                    <select class="form-select" id="slope" name="slope" required>
+                                        <option value="" selected disabled>Sélectionner...</option>
+                                        <option value="0">Descendante</option>
+                                        <option value="1">Plate</option>
+                                        <option value="2">Ascendante</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Nombre de vaisseaux colorés -->
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="ca" class="form-label">Nombre de vaisseaux principaux colorés</label>
+                                    <div class="form-text mb-2">{{ feature_descriptions['ca'] }}</div>
+                                    <select class="form-select" id="ca" name="ca" required>
+                                        <option value="" selected disabled>Sélectionner...</option>
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Résultat test thalium -->
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="thal" class="form-label">Résultat test thalium</label>
+                                    <div class="form-text mb-2">{{ feature_descriptions['thal'] }}</div>
+                                    <select class="form-select" id="thal" name="thal" required>
+                                        <option value="" selected disabled>Sélectionner...</option>
+                                        <option value="1">Défaut corrigé</option>
+                                        <option value="2">Flux sanguin normal</option>
+                                        <option value="3">Défaut réversible</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 mt-4">
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-heart-pulse me-2"></i>Obtenir la prédiction
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <p class="text-muted small">
+                    <i class="fas fa-info-circle me-1"></i>
+                    <strong>Note :</strong> Cette prédiction est basée sur un modèle statistique et ne constitue pas un diagnostic médical. 
+                    Consultez toujours un professionnel de santé qualifié pour une évaluation médicale complète.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('prediction-form');
+        
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            // Validation de base côté client
+            form.querySelectorAll('input[type="number"]').forEach(function(input) {
+                const value = parseFloat(input.value);
+                const min = parseFloat(input.getAttribute('min'));
+                const max = parseFloat(input.getAttribute('max'));
+                
+                if (isNaN(value) || value < min || value > max) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                    
+                    // Ajouter un message d'erreur
+                    let feedback = input.nextElementSibling;
+                    if (!feedback || !feedback.classList.contains('invalid-feedback')) {
+                        feedback = document.createElement('div');
+                        feedback.classList.add('invalid-feedback');
+                        input.parentNode.appendChild(feedback);
+                    }
+                    feedback.textContent = `Veuillez entrer une valeur entre ${min} et ${max}.`;
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+            
+            // Vérifier les select
+            form.querySelectorAll('select').forEach(function(select) {
+                if (select.value === "" || select.value === null) {
+                    select.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    select.classList.remove('is-invalid');
+                }
+            });
+            
+            // Vérifier les radio buttons
+            const radioGroups = ['sex', 'fbs', 'exang'];
+            radioGroups.forEach(function(name) {
+                const checked = form.querySelector(`input[name="${name}"]:checked`);
+                if (!checked) {
+                    form.querySelectorAll(`input[name="${name}"]`).forEach(function(radio) {
+                        radio.parentElement.classList.add('text-danger');
+                    });
+                    isValid = false;
+                } else {
+                    form.querySelectorAll(`input[name="${name}"]`).forEach(function(radio) {
+                        radio.parentElement.classList.remove('text-danger');
+                    });
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+                
+                // Afficher un message d'alerte en haut du formulaire
+                const alertDiv = document.createElement('div');
+                alertDiv.classList.add('alert', 'alert-danger', 'alert-dismissible', 'fade', 'show', 'mb-4');
+                alertDiv.innerHTML = `
+                    <strong>Erreur!</strong> Veuillez corriger les champs en erreur avant de soumettre.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                
+                const formElement = document.getElementById('prediction-form');
+                formElement.parentNode.insertBefore(alertDiv, formElement);
+                
+                // Scroll vers le haut du formulaire
+                window.scrollTo(0, form.offsetTop - 100);
+            }
+        });
+    });
+</script>
+{% endblock %}

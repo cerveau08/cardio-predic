@@ -1,0 +1,190 @@
+{% extends "layout.html" %}
+
+{% block title %}Prédiction par Lot - CardioPredict{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="fas fa-file-csv me-2"></i>Prédiction par Lot</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text mb-4">
+                        Téléchargez un fichier CSV contenant les données de plusieurs patients pour obtenir des prédictions pour l'ensemble du groupe.
+                    </p>
+                    
+                    <form action="{{ url_for('batch_predict') }}" method="post" enctype="multipart/form-data" id="batch-form">
+                        <div class="mb-4">
+                            <label for="file" class="form-label">Fichier CSV</label>
+                            <input class="form-control" type="file" id="file" name="file" accept=".csv" required>
+                            <div class="form-text">Assurez-vous que le fichier CSV contient toutes les colonnes nécessaires.</div>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <h5 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Format requis du fichier CSV</h5>
+                            <p>Le fichier CSV doit contenir les colonnes suivantes :</p>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Colonne</th>
+                                            <th>Description</th>
+                                            <th>Type</th>
+                                            <th>Valeurs possibles</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>age</td>
+                                            <td>Âge du patient</td>
+                                            <td>Numérique</td>
+                                            <td>20-80</td>
+                                        </tr>
+                                        <tr>
+                                            <td>sex</td>
+                                            <td>Sexe du patient</td>
+                                            <td>Numérique</td>
+                                            <td>0 (femme), 1 (homme)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>cp</td>
+                                            <td>Type de douleur thoracique</td>
+                                            <td>Numérique</td>
+                                            <td>0, 1, 2, 3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>trestbps</td>
+                                            <td>Pression artérielle</td>
+                                            <td>Numérique</td>
+                                            <td>90-200</td>
+                                        </tr>
+                                        <tr>
+                                            <td>chol</td>
+                                            <td>Cholestérol</td>
+                                            <td>Numérique</td>
+                                            <td>100-600</td>
+                                        </tr>
+                                        <tr>
+                                            <td>fbs</td>
+                                            <td>Taux de sucre > 120mg/dl</td>
+                                            <td>Numérique</td>
+                                            <td>0 (non), 1 (oui)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>restecg</td>
+                                            <td>Résultats ECG repos</td>
+                                            <td>Numérique</td>
+                                            <td>0, 1, 2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>thalach</td>
+                                            <td>Fréquence cardiaque max</td>
+                                            <td>Numérique</td>
+                                            <td>70-220</td>
+                                        </tr>
+                                        <tr>
+                                            <td>exang</td>
+                                            <td>Angine induite par l'exercice</td>
+                                            <td>Numérique</td>
+                                            <td>0 (non), 1 (oui)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>oldpeak</td>
+                                            <td>Dépression ST</td>
+                                            <td>Numérique</td>
+                                            <td>0-6.5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>slope</td>
+                                            <td>Pente segment ST</td>
+                                            <td>Numérique</td>
+                                            <td>0, 1, 2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ca</td>
+                                            <td>Nombre de vaisseaux colorés</td>
+                                            <td>Numérique</td>
+                                            <td>0, 1, 2, 3, 4</td>
+                                        </tr>
+                                        <tr>
+                                            <td>thal</td>
+                                            <td>Résultat test thalium</td>
+                                            <td>Numérique</td>
+                                            <td>1, 2, 3</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <a href="{{ url_for('static', filename='exemple_template.csv') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-download me-2"></i>Télécharger un modèle CSV
+                            </a>
+                        </div>
+                        
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-play me-2"></i>Lancer la prédiction par lot
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <p class="text-muted small">
+                    <i class="fas fa-info-circle me-1"></i>
+                    <strong>Note :</strong> Le traitement par lot peut prendre quelques instants en fonction de la taille du fichier.
+                    Les résultats seront téléchargeables sous forme de fichier CSV avec les prédictions.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('batch-form');
+        const fileInput = document.getElementById('file');
+        
+        form.addEventListener('submit', function(e) {
+            if (fileInput.files.length === 0) {
+                e.preventDefault();
+                
+                // Afficher un message d'alerte
+                const alertDiv = document.createElement('div');
+                alertDiv.classList.add('alert', 'alert-danger', 'alert-dismissible', 'fade', 'show', 'mb-4');
+                alertDiv.innerHTML = `
+                    <strong>Erreur!</strong> Veuillez sélectionner un fichier CSV à traiter.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                
+                form.parentNode.insertBefore(alertDiv, form);
+            } else {
+                // Vérifier l'extension du fichier
+                const fileName = fileInput.files[0].name;
+                const fileExt = fileName.split('.').pop().toLowerCase();
+                
+                if (fileExt !== 'csv') {
+                    e.preventDefault();
+                    
+                    // Afficher un message d'alerte
+                    const alertDiv = document.createElement('div');
+                    alertDiv.classList.add('alert', 'alert-danger', 'alert-dismissible', 'fade', 'show', 'mb-4');
+                    alertDiv.innerHTML = `
+                        <strong>Erreur!</strong> Le fichier doit être au format CSV.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    
+                    form.parentNode.insertBefore(alertDiv, form);
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

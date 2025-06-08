@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+
+{% block title %}Résultats de Prédiction par Lot - CardioPredict{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="fas fa-clipboard-check me-2"></i>Résultats de la Prédiction par Lot</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Le traitement par lot a été effectué avec succès!
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="mb-3">Récapitulatif</h4>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th>Fichier traité</th>
+                                        <td>{{ filename }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Nombre d'échantillons</th>
+                                        <td>{{ num_samples }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Prédictions positives (maladie cardiaque)</th>
+                                        <td>{{ num_positive }} ({{ "%.1f"|format(num_positive / num_samples * 100) }}%)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Prédictions négatives (pas de maladie)</th>
+                                        <td>{{ num_negative }} ({{ "%.1f"|format(num_negative / num_samples * 100) }}%)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Fichier résultat</th>
+                                        <td>{{ result_filename }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="mb-3">Distribution des Prédictions</h4>
+                        <div class="text-center py-3">
+                            <img src="data:image/png;base64,{{ pred_dist_img }}" class="img-fluid" alt="Distribution des prédictions">
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <h5 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Que contient le fichier de résultats?</h5>
+                        <p>Le fichier CSV de résultats contient toutes les colonnes du fichier original plus les colonnes suivantes :</p>
+                        <ul>
+                            <li><strong>prediction</strong> : La prédiction numérique (0 = maladie cardiaque, 1 = pas de maladie)</li>
+                            <li><strong>prediction_text</strong> : La prédiction textuelle</li>
+                            <li><strong>confidence</strong> : Le niveau de confiance de la prédiction en pourcentage</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="d-grid gap-3">
+                        <a href="{{ url_for('static', filename='uploads/') }}{{ result_filename }}" download class="btn btn-success btn-lg">
+                            <i class="fas fa-download me-2"></i>Télécharger les résultats (CSV)
+                        </a>
+                        <a href="{{ url_for('batch_predict_form') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-redo me-2"></i>Nouvelle prédiction par lot
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow mt-4">
+                <div class="card-header bg-light">
+                    <h4 class="mb-0">Prochaines étapes</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-chart-pie text-primary fs-2 me-3"></i>
+                                </div>
+                                <div>
+                                    <h5>Analyser en détail</h5>
+                                    <p>Utilisez le fichier CSV des résultats pour effectuer des analyses plus approfondies dans votre outil statistique préféré.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-users text-primary fs-2 me-3"></i>
+                                </div>
+                                <div>
+                                    <h5>Triage des patients</h5>
+                                    <p>Identifiez les patients à haut risque pour un suivi prioritaire.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-file-medical text-primary fs-2 me-3"></i>
+                                </div>
+                                <div>
+                                    <h5>Intégrer aux dossiers</h5>
+                                    <p>Ajoutez ces prédictions aux dossiers médicaux des patients pour un suivi complet.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-calendar-check text-primary fs-2 me-3"></i>
+                                </div>
+                                <div>
+                                    <h5>Planifier un suivi</h5>
+                                    <p>Utilisez ces résultats pour planifier des rendez-vous de suivi adaptés au niveau de risque.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
